@@ -1,44 +1,63 @@
-// Suavizar rolagem para links âncora
-/*document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+
+// Suavizar
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
-        e.preventDefault();
+    e.preventDefault();
         
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-            behavior: 'smooth'
+    document.querySelector(this.getAttribute('href')).scrollIntoView({
+    behavior: 'smooth'
         });
     });
 });
 
-// Formulário de contato (simulação)
+
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('.contato-form');
     if (form) {
         form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Mensagem enviada com sucesso! Entraremos em contato em breve.');
-            form.reset();
+        e.preventDefault();
+        alert('Mensagem enviada com sucesso! Entraremos em contato em breve.');
+        form.reset();
         });
     }
-});*/
-jQuery(document).ready(function($) {
-    if ($("#google-reviews").length == 0) {
-      return
-    }
-    // Find a placeID via https://developers.google.com/places/place-id
-    $("#google-reviews").googlePlaces({
-      placeId: 'ChIJZa6ezJa8j4AR1p1nTSaRtuQ',
-      // the following params are optional (default values)
-      header: "<h3>Google Reviews</h3>", // html/text over Reviews
-      footer: '', // html/text under Reviews block
-      maxRows: 5, // max 5 rows of reviews to be displayed
-      minRating: 4, // minimum rating of reviews to be displayed
-      months: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
-      textBreakLength: "90", // length before a review box is set to max width
-      shortenNames: true, // example: "Max Mustermann" -> "Max M."",
-      moreReviewsButtonUrl: '', // url to Google Place reviews popup
-      moreReviewsButtonLabel: 'Show More Reviews',
-      writeReviewButtonUrl: '', // url to Google Place write review popup
-      writeReviewButtonLabel: 'Write New Review',
-      showProfilePicture: true
-    });
-  });
+});
+
+        // EmailJS
+    emailjs.init('020ilson');
+        
+    document.getElementById('contactForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+            
+        const submitBtn = document.getElementById('submitBtn');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+            
+        // Esconde mensagens anteriores
+        successMessage.style.display = 'none';
+        errorMessage.style.display = 'none';
+            
+        // Validação adicional
+        if (!this.checkValidity()) {
+            alert('Por favor, preencha todos os campos corretamente.');
+            return;
+        }
+            
+        // Desativa o botão durante o envio
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Enviando...';
+            
+        // Envie o email usando EmailJS
+        emailjs.sendForm('default_service', 'template_020ilson', this)
+            .then(function(response) {
+                console.log('E-mail enviado com sucesso!', response);
+                successMessage.style.display = 'block';
+                document.getElementById('contactForm').reset();
+            }, function(error) {
+                console.error('Falha no envio:', error);
+                errorMessage.style.display = 'block';
+            })
+            .finally(function() {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Enviar Mensagem';
+            });
+        });
