@@ -246,8 +246,9 @@ footer {
         
     }
     .logo{
-    width: 500px;
+    width: 800px;
     gap: 2px;
+    margin-right: 50px;
     }
 
     .nav-links {
