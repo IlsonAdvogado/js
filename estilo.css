@@ -248,7 +248,6 @@ footer {
     .logo{
     width: 500px;
     gap: 2px;
-
     }
 
     .nav-links {
@@ -257,7 +256,7 @@ footer {
         align-items: center;
         padding: 1rem 0;
         font-size: 15px;
-        margin-left: 50px
+        margin-left: 200px
     }
 
     .nav-links li {
