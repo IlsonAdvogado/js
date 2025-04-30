@@ -243,11 +243,14 @@ footer {
 @media (max-width: 900px) {
     .nav-container {
         flex-direction: row;
-        
+        padding: 2px;    
+        margin: 2px;  
     }
+
     .logo{
     width: 500px;
     gap: 2px;
+
     }
 
     .nav-links {
@@ -256,11 +259,11 @@ footer {
         align-items: center;
         padding: 1rem 0;
         font-size: 15px;
-
+        margin-left: 20px;
     }
 
     .nav-links li {
-
+        margin-left: 2px;
     }
 
     .sobre-content {
