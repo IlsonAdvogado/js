@@ -24,21 +24,44 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // contato
 
-document.querySelector('.contato-form').addEventListener('submit', function(e) {
+document.querySelector('.contato-form').addEventListener('submit', async function(e) {
     e.preventDefault();
     const form = e.target;
-    fetch(form.action, {
-      method: 'POST',
-      body: new FormData(form)
-    })
-    .then(response => {
-      if (response.ok) {
-        window.location.href = form.querySelector('input[name="_next"]').value;
-      } else {
-        alert('Ocorreu um erro ao enviar o formulário.');
-      }
-    })
-    .catch(error => {
-      alert('Ocorreu um erro ao enviar o formulário.');
-    });
-  });
+    const button = document.getElementById('submit-btn');
+    const feedback = document.getElementById('form-feedback');
+    
+    // Feedback visual
+    button.disabled = true;
+    button.innerHTML = '<span class="spinner"></span> Enviando...';
+    feedback.textContent = '';
+    feedback.style.color = 'inherit';
+    
+    try {
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { 'Accept': 'application/json' }
+        });
+        
+        if (response.ok) {
+            feedback.textContent = '✔ Mensagem enviada com sucesso!';
+            feedback.style.color = 'green';
+            form.reset();
+            
+            // Redirecionamento após 3 segundos
+            const redirectUrl = form.querySelector('[name="_next"]').value;
+            if (redirectUrl) {
+                setTimeout(() => { window.location.href = redirectUrl; }, 3000);
+            }
+        } else {
+            throw new Error('Falha no envio');
+        }
+    } catch (error) {
+        feedback.textContent = '✖ Ocorreu um erro. Por favor, tente novamente.';
+        feedback.style.color = 'red';
+        console.error('Erro no envio:', error);
+    } finally {
+        button.disabled = false;
+        button.textContent = 'Enviar Mensagem';
+    }
+});
